@@ -7,7 +7,7 @@ gem "bson_ext"
 
 gem 'devise', '> 1.1.3'
 
-gem 'carrierwave', :git => 'git://github.com/jnicklas/carrierwave.git', :branch => "0.5-stable"
+gem 'carrierwave'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'mini_magick'
 
