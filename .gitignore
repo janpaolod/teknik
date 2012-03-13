@@ -12,3 +12,4 @@ nbproject/**/*
 public/uploads/**/*
 .rvmrc
 config/database.yml
+config/database.yml
