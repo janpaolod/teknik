@@ -1,0 +1,82 @@
+%h2
+  Past Deals
+  %br
+  %br
+  - if admin_signed_in? || @merchant == current_merchant
+    = link_to image_tag("/images/carbon/silk/add.png"), new_merchant_promo_path(@merchant)
+-@merchant.promos.desc(:countdown_period_start).each do |promo|
+  -if admin_signed_in? || @merchant == current_merchant
+    .deal-item-image-list#gallery3
+      -image = promo.image.url || "/images/deal.default2.png"
+      =link_to image_tag(image), image
+    .merchant-deal-item#details
+      %h3
+        -if promo.rejected?
+          %span{:style=>"color: red"}REJECTED: 
+        =link_to("#{promo.percent_discounted}% OFF! Only P#{promo.price_discounted} for #{promo.name}", [promo.merchant, promo])
+      %p=promo.details
+      %p
+        %strong Claimable on:
+        =promo.period_start_new_format
+        %strong Until:
+        =promo.period_end_new_format
+      %p
+        %strong Coupon valid on:
+        =promo.validity_start_new_format
+        %strong Until:
+        =promo.validity_end_new_format
+      %p
+        -if @promo_branches_count = 1
+          %strong Participating branch: 
+          =promo.branches.collect{ |b| b.name }.join(', ')
+        -else
+          %strong Participating branches:
+          =promo.branches.collect{ |b| b.name }.join(', ')
+      %p
+        %strong Actual Price: P
+        =promo.price_actual
+        %nbsp;
+        %strong Discounted Price: P
+        =promo.price_discounted
+        %nbsp;
+        %strong Quota:
+        =promo.quota
+      %p
+        %strong Code:
+        =promo.manual_code || promo.random_code
+      %p
+        %strong= promo.rejected? ? "Action:" : "Actions"
+        - unless promo.rejected?
+          -if promo.editable?
+            = link_to image_tag("/images/carbon/silk/pencil.png"),   [:edit, promo.merchant, promo]
+          -else
+            <img src="/images/carbon/silk/pencil.png">
+        = link_to image_tag("/images/carbon/silk/cross.png"), [promo.merchant, promo], :confirm => "Are you sure you want to delete this deal?\n* #{promo.name}", :method => :delete
+        -unless promo.editable?
+          (This promo is active. Therefore it cannot be <img src="/images/carbon/silk/pencil.png">)
+  -else
+    -if promo.date_now >= promo.period_start && promo.date_now >= promo.period_end
+      .deal-item-image-list#gallery3
+        -image = promo.image.url || "/images/deal.default2.png"
+        =link_to image_tag(image), image
+      .merchant-deal-item#details
+        %h3
+          =link_to("#{promo.percent_discounted}% OFF! Only P#{promo.price_discounted} for #{promo.name}", [promo.merchant, promo])
+        %p=promo.details
+        %p
+          %strong Claimable on:
+          =promo.period_start_new_format
+          %strong Until:
+          =promo.period_end_new_format
+        %p
+          %strong Coupon valid on:
+          =promo.validity_start_new_format
+          %strong Until:
+          =promo.validity_end_new_format
+        %p
+        -if @promo_branches_count = 1
+          %strong Participating branch: 
+          =promo.branches.collect{ |b| b.name }.join(', ')
+        -else
+          %strong Participating branches:
+          =promo.branches.collect{ |b| b.name }.join(', ')

@@ -1,0 +1,127 @@
+-if admin_signed_in? || @merchant == current_merchant
+  %h2= @promo.name
+  .deal-overview
+    .deal-status.round
+      -if @promo.rejected?
+        This deal was rejected by Twiggzy.
+      -elsif @promo.promo_valid?
+        This deal is still claimable.
+      -else
+        This deal can't be claimed anymore.
+    %h3 Overview
+    %strong Merchant:
+    = @promo.merchant.name
+    %br
+    %strong Claim count:
+    = @promo.promo_claims.count
+    %br
+    %strong Total discounts given so far:
+    = @promo.promo_claims.total_discounts
+    %br
+    -#
+      %strong Twiggzy's share
+      = @promo.promo_claims.filshare
+  .deal-details
+    %h3 Details
+    -if @promo.promo_claims.count > 0
+      %table{:cellspacing => 0, :cellpadding => 0}
+        %tr
+          %th Customer name
+          -unless @merchant == current_merchant
+            %th Customer email
+          %th Discount
+          %th Authentication code
+          -#
+            %th Redeemed?
+            %th Action
+        -@promo.promo_claims.each do |claim|
+          %tr
+            %td
+              =claim.user.first_name
+              =claim.user.last_name
+            -unless @merchant == current_merchant
+              %td= claim.user.email
+            %td= claim.discounts
+            %td= claim.manual_code
+    -else
+      %strong No customer claimed this deal yet!
+-else
+  -if (@promo.date_now >= @promo.countdown_period_start && @promo.promo_valid?) || @promo.date_now > @promo.countdown_period_end
+    %h3#dealnameshow
+      %b 
+      = "Only P#{@promo.price_discounted} for #{@promo.name.capitalize} at"
+      =link_to @promo.merchant.name, :controller => "merchants", :action => "show", :id => @merchant
+    -if @promo.image.url
+      .deal-item-image-show#gallery
+        %img{:src => @promo.image.url}
+    -else
+      .deal-item-image-show#gallery2
+        %img{:src => '/images/deal.default2.png'}
+    .deal-show.round  
+      %table#box.round
+        %tr
+          %td#box
+            %b Actual:
+          %td#box
+            %b Discount:
+          %td#box
+            %b Savings:
+        %tr
+          %td#box2
+            %b= "P#{@promo.price_actual}"
+          %td#box2
+            %b= "#{@promo.percent_discounted}%"  
+          %td#box2
+            %b= "P#{@promo.price_actual - @promo.price_discounted}"
+      %table#box
+        %tr
+          %td
+            %b Time left to claim:
+        %tr
+          %td    
+          .countdown.index.round
+            = @promo.countdown_time_left
+    .remaining-show.round
+      %table#box
+        %tr
+          %td  
+          -if @promo.promo_valid? 
+            = "#{@promo.remaining} coupons left"
+          -else
+            Deal is done!  
+    %br
+    %br
+    %h3#details
+      %b Details:
+      %p
+      = @promo.details
+      %p
+      %b Coupon is valid on:
+      = @promo.coupon_validity_start.strftime("%B %d, %Y")
+      %b to
+      = @promo.coupon_validity_end.strftime("%B %d, %Y")
+      %br
+      %br
+      %p
+      %b Participating Branches:
+      %p
+      -@merchant.branches.each do |branch|
+        = "#{branch.name.capitalize} -  #{branch.address.capitalize}, #{branch.city.name}"
+        </br>
+    %p#remember
+      %br
+      %b Remember: Print the Coupon and present it to any participating branches. 
+      %br
+      %b#remember Pay the full amount of the discounted price directly to the Merchant.
+      %br
+    = render 'customer_form'
+    .div#back
+      %br
+      = link_to('Back', root_path)
+  -else
+    %h3#dealnameshow
+      %b 
+      = "Deal is not yet available."
+    .div#back
+      %br
+      = link_to('Back', root_path)  
