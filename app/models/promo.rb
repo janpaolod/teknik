@@ -66,12 +66,11 @@ class Promo
   scope :pending, where(:status => :pending)
 
   # Autosuggest period_start, period_end, and validity_start
-  def initialize(options = {})
+  def initialize(attributes = nil, options = {})
     super(options)
     self.countdown_period_start = options[:period_start] || min_period_start
     self.countdown_period_end   = options[:period_end]   || min_period_end
-    self.coupon_validity_start  = 
-      options[:coupon_validity_start]  || min_max_validity_start
+    self.coupon_validity_start  = options[:coupon_validity_start]  || min_max_validity_start
   end
 
   # Create permalink just before saving

@@ -8,7 +8,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   end
 
   def cache_dir
-    "#{RAILS_ROOT}/tmp/uploads"
+    "#{Rails.root}/tmp/uploads"
   end
 
   # Process files as they are uploaded:

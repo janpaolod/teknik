@@ -186,7 +186,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bson_ext (~> 1.6.1)
+  bson_ext (~> 1.6.0)
   carrierwave
   carrierwave-mongoid
   devise (> 1.1.3)
