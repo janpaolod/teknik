@@ -36,7 +36,7 @@ class PromosController < ApplicationController
 
   def new
     @merchant = Merchant.where(:permalink => params[:merchant_id]).first
-    @promo = @merchant.promos.new
+    @promo = @merchant.promos.build
     @classifications = @merchant.classifications
   end
 
