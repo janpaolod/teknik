@@ -48,9 +48,10 @@ class Promo
   validates :coupon_validity_end,    :presence => true
   validates :price_actual,           :presence => true
   validates :price_discounted,       :presence => true
+  validates_presence_of :branches
   validate  :minimum_discount
   validate  :code_should_be_8_characters_or_nothing
-  validate  :branches_cannot_be_empty
+  #validate  :branches_cannot_be_empty
   validate  :valid_countdown_period_start
   validate  :valid_countdown_period_end
   validate  :valid_coupon_validity_start
@@ -66,11 +67,12 @@ class Promo
   scope :pending, where(:status => :pending)
 
   # Autosuggest period_start, period_end, and validity_start
-  def initialize(attributes = nil, options = {})
+  def initialize(options = nil, attributes = nil)
     super(options)
     self.countdown_period_start = options[:period_start] || min_period_start
     self.countdown_period_end   = options[:period_end]   || min_period_end
-    self.coupon_validity_start  = options[:coupon_validity_start]  || min_max_validity_start
+    self.coupon_validity_start  = 
+    options[:coupon_validity_start]  || min_max_validity_start
   end
 
   # Create permalink just before saving
@@ -219,7 +221,7 @@ class Promo
     end
 
     eval("self.#{resource.to_s.singularize}_ids = []")
-    eval("self.#{resource} = array")
+    #eval("self.#{resource} = array")
     self.save
   end
 
