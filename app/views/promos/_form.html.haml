@@ -63,7 +63,7 @@
     = f.label(:branch, "Assign to Branch")
     %br
     -@merchant.branches.each do |branch|
-      -if @promo.branch_ids.include? branch.id
+      -if @promo.branch_ids.include? ( branch.id )
         =check_box_tag "branches[#{branch.id}]", 1, true
       -else
         =check_box_tag "branches[#{branch.id}]"
