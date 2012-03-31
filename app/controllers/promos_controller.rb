@@ -53,7 +53,7 @@ class PromosController < ApplicationController
     override_period_start(@promo) if admin_signed_in?
 
     if @promo.set_branches checked_branches # promo automatically saved
-      @promo.set_classifications checked_classifications
+      #@promo.set_classifications checked_classifications
       flash[:notice] = "Your new deal was successfully created and is pending for manual review by the Twiggzy team. You will be notified whether your deal was activated or rejected through email. Thank you for using Twiggzy."
       redirect_to merchant_path(@merchant)
     else
