@@ -48,7 +48,6 @@ class Promo
   validates :coupon_validity_end,    :presence => true
   validates :price_actual,           :presence => true
   validates :price_discounted,       :presence => true
-  validates_presence_of :branches
   validate  :minimum_discount
   validate  :code_should_be_8_characters_or_nothing
   #validate  :branches_cannot_be_empty
@@ -119,9 +118,9 @@ class Promo
     end
   end
 
-  def set_classifications( classifications )
-    set :classifications, classifications
-  end
+ # def set_classifications( classifications )
+ #   set :classifications, classifications
+  #end
 
   def set_branches( branches )
     set :branches, branches
@@ -221,7 +220,7 @@ class Promo
     end
 
     eval("self.#{resource.to_s.singularize}_ids = []")
-    #eval("self.#{resource} = array")
+    eval("self.#{resource} = array")
     self.save
   end
 
